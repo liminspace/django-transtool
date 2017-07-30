@@ -1,0 +1,8 @@
+{% load i18n %}
+
+
+{% trans 'hi there from a.rml' %}
+
+{% blocktrans %}
+    he there from a.rml
+{% endblocktrans %}
