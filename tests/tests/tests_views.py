@@ -3,7 +3,10 @@ import os
 from io import BytesIO
 from django.conf import settings
 from django.core.management import call_command
-from django.urls import reverse
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 from tests.tests import CustomTestCase
 
 
