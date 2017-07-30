@@ -12,7 +12,8 @@ env:
   - DJANGO_VERSION="<1.12"
 
 install:
-  - pip install "Django$DJANGO_VERSION"
+  - pip install -U -r requirements.txt
+  - pip install -U "Django$DJANGO_VERSION"
 
 script:
   - python tools.py test
