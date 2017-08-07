@@ -102,7 +102,7 @@ class Command(BaseCommand):
                         with open(os.path.join(TRANSTOOL_PROJECT_BASE_DIR, fn), 'wb') as f:
                             f.write(content)
                     except IOError as e:
-                        self.stdout.write(e)
+                        self.stdout.write(e.message)
                         self.stdout.write('  SKIP: {}'.format(fn))
                     else:
                         self.stdout.write('  + {}'.format(fn))
@@ -120,7 +120,7 @@ class Command(BaseCommand):
                         with open(os.path.join(TRANSTOOL_PROJECT_BASE_DIR, fn), 'wb') as f:
                             f.write(content)
                     except IOError as e:
-                        self.stdout.write(e)
+                        self.stdout.write(e.message)
                         self.stdout.write('  SKIP: {}'.format(fn_info))
                     else:
                         self.stdout.write('  * {}'.format(fn_info))
