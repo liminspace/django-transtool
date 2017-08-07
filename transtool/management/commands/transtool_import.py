@@ -3,7 +3,7 @@ import sys
 import tempfile
 import zipfile
 import requests
-from io import StringIO
+from io import BytesIO
 from django.core.management import CommandError, BaseCommand
 from ...tools import get_lc_files_list, get_diff_po
 from ...settings import TRANSTOOL_DL_URL, TRANSTOOL_DL_KEY, TRANSTOOL_PROJECT_BASE_DIR
@@ -145,9 +145,9 @@ class Command(BaseCommand):
         }, stream=True)
         if r.status_code != 200:
             self.stdout.write('Request status code is not 200: {}'.format(r.status_code))
-            self.stdout.write('Fail.', double_br=True)
+            self.stdout.write('Fail.', ending='\n\n')
             sys.exit(1)
-        file_content = StringIO()
+        file_content = BytesIO()
         for chunk in r.iter_content(chunk_size=1024):
             file_content.write(chunk)
         file_content.seek(0, os.SEEK_END)
@@ -164,4 +164,4 @@ class Command(BaseCommand):
             self.print_diff_info(diff_info)
         else:
             self.copy_files(diff_info, file_content)
-        self.stdout.write('Done.', double_br=True)
+        self.stdout.write('Done.', ending='\n\n')

@@ -27,13 +27,13 @@ def get_diff_po(po1_fn, po2_fn):
     po2_lines = []
     for entry in sorted(polib.pofile(po1_fn), key=lambda obj: obj.msgid):
         po1_lines.append((
-            'msgid {}\n\n'
-            'msgstr {}\n\n'
+            u'msgid {}\n\n'
+            u'msgstr {}\n\n'
         ).format(entry.msgid, entry.msgid))
     for entry in sorted(polib.pofile(po2_fn), key=lambda obj: obj.msgid):
         po2_lines.append((
-            'msgid {}\n\n'
-            'msgstr {}\n\n'
+            u'msgid {}\n\n'
+            u'msgstr {}\n\n'
         ).format(entry.msgid, entry.msgid))
     added = removed = 0
     for diff_line in difflib.unified_diff(po1_lines, po2_lines):
