@@ -4,8 +4,10 @@ import os
 import polib
 import shutil
 from io import BytesIO
+from django.core import management
 from django.core.management import BaseCommand, call_command
 from django.core.management.commands import makemessages
+from django.utils.encoding import force_bytes
 from ...settings import TRANSTOOL_LOCALE_PATHS, TRANSTOOL_LOCALES, TRANSTOOL_DEFAULT_DOMAINS
 
 
@@ -56,8 +58,8 @@ class CustomMakemessagesCommand(makemessages.Command):
     def _get_hash_of_po_file(pofile_fn):
         h = hashlib.sha512()
         for entry in polib.pofile(pofile_fn):
-            h.update(base64.b64encode(entry.msgid.encode()))
-            h.update(base64.b64encode(entry.msgstr.encode()))
+            h.update(base64.b64encode(force_bytes(entry.msgid)))
+            h.update(base64.b64encode(force_bytes(entry.msgstr)))
         return h
 
     def write_po_file(self, potfile, locale):
@@ -77,6 +79,18 @@ class CustomMakemessagesCommand(makemessages.Command):
                 old_file.seek(0)
                 with open(pofile_fn, 'wb') as f:
                     shutil.copyfileobj(old_file, f)
+
+
+def call_object_command(name, *args, **kwargs):
+    def _get_command():
+        return {name: name}
+
+    old_function = management.get_commands
+    try:
+        management.get_commands = _get_command
+        return call_command(name, *args, **kwargs)
+    finally:
+        management.get_commands = old_function
 
 
 class Command(BaseCommand):
@@ -101,7 +115,7 @@ class Command(BaseCommand):
                 }
                 if domain_opts.get('REST', False):
                     command_kwargs['ignored_source_dirs'] = self._get_excluded_source_dirs_for_rest(domain)
-                call_command(CustomMakemessagesCommand(), **command_kwargs)
+                call_object_command(CustomMakemessagesCommand(), **command_kwargs)
 
     @staticmethod
     def _get_excluded_source_dirs_for_rest(domain):
