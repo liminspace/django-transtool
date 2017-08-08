@@ -29,12 +29,12 @@ def get_diff_po(po1_fn, po2_fn):
         po1_lines.append((
             u'msgid {}\n\n'
             u'msgstr {}\n\n'
-        ).format(entry.msgid, entry.msgid))
+        ).format(entry.msgid, entry.msgstr))
     for entry in sorted(polib.pofile(po2_fn), key=lambda obj: obj.msgid):
         po2_lines.append((
             u'msgid {}\n\n'
             u'msgstr {}\n\n'
-        ).format(entry.msgid, entry.msgid))
+        ).format(entry.msgid, entry.msgstr))
     added = removed = 0
     for diff_line in difflib.unified_diff(po1_lines, po2_lines):
         if diff_line.startswith('+++ ') or diff_line.startswith('--- ') or diff_line.startswith('@@ '):
