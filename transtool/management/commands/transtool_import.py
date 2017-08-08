@@ -148,7 +148,7 @@ class Command(BaseCommand):
             self.stdout.write('Fail.', ending='\n\n')
             sys.exit(1)
         file_content = BytesIO()
-        for chunk in r.iter_content(chunk_size=1024):
+        for chunk in r.iter_content(chunk_size=(16 * 1024)):
             file_content.write(chunk)
         file_content.seek(0, os.SEEK_END)
         file_content_size = file_content.tell()
