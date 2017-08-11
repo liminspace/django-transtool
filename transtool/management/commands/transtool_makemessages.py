@@ -6,12 +6,17 @@ import shutil
 from io import BytesIO
 from django.core import management
 from django.core.management import BaseCommand, call_command
-from django.core.management.commands import makemessages
 from django.utils.encoding import force_bytes
 from ...settings import TRANSTOOL_LOCALE_PATHS, TRANSTOOL_LOCALES, TRANSTOOL_DEFAULT_DOMAINS
 
 
-class CustomMakemessagesCommand(makemessages.Command):
+try:  # todo add base makemessages command class into settings
+    from django_jinja.management.commands.makemessages import Command as BaseMakemessagesCommand
+except ImportError:
+    from django.core.management.commands.makemessages import Command as BaseMakemessagesCommand
+
+
+class CustomMakemessagesCommand(BaseMakemessagesCommand):
     source_dirs = None
     ignored_source_dirs = None
     update_all = None
@@ -43,6 +48,7 @@ class CustomMakemessagesCommand(makemessages.Command):
             for f in files:
                 ignore = False
                 for ignored_source_dir in self.ignored_source_dirs:
+                    # todo !!! python 2.7 doesn't have commonpath method !!!
                     if os.path.commonpath([ignored_source_dir]) == os.path.commonpath([ignored_source_dir, f.path]):
                         ignore = True
                         break
