@@ -44,3 +44,21 @@ def get_diff_po(po1_fn, po2_fn):
         elif diff_line.startswith('-'):
             removed += 1
     return added + removed
+
+
+def get_commonpath(paths):
+    split_paths = [path.split(os.sep) for path in paths]
+    try:
+        isabs, = set(p[:1] == os.sep for p in paths)
+    except ValueError:
+        raise ValueError("Can't mix absolute and relative paths")
+    split_paths = [[c for c in s if c and c != os.curdir] for s in split_paths]
+    s1 = min(split_paths)
+    s2 = max(split_paths)
+    common = s1
+    for i, c in enumerate(s1):
+        if c != s2[i]:
+            common = s1[:i]
+            break
+    prefix = os.sep if isabs else ''
+    return prefix + os.sep.join(common)

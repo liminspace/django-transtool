@@ -7,6 +7,7 @@ from io import BytesIO
 from django.core import management
 from django.core.management import BaseCommand, call_command
 from django.utils.encoding import force_bytes
+from ...tools import get_commonpath
 from ...settings import TRANSTOOL_LOCALE_PATHS, TRANSTOOL_LOCALES, TRANSTOOL_DEFAULT_DOMAINS
 
 
@@ -48,8 +49,7 @@ class CustomMakemessagesCommand(BaseMakemessagesCommand):
             for f in files:
                 ignore = False
                 for ignored_source_dir in self.ignored_source_dirs:
-                    # todo !!! python 2.7 doesn't have commonpath method !!!
-                    if os.path.commonpath([ignored_source_dir]) == os.path.commonpath([ignored_source_dir, f.path]):
+                    if get_commonpath([ignored_source_dir]) == get_commonpath([ignored_source_dir, f.path]):
                         ignore = True
                         break
                 if not ignore:
