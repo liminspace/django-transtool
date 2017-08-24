@@ -42,7 +42,7 @@ class CustomMakemessagesCommand(BaseMakemessagesCommand):
     def find_files(self, root):
         files = []
         for source_dir in self.source_dirs:
-            files.extend(super(CustomMakemessagesCommand, self).find_files(source_dir.rstrip('\\/')))
+            files.extend(super(CustomMakemessagesCommand, self).find_files(source_dir))
 
         if self.ignored_source_dirs:
             _files = []
@@ -56,6 +56,11 @@ class CustomMakemessagesCommand(BaseMakemessagesCommand):
                     _files.append(f)
             files = _files
             del _files
+
+        locale_dir = os.path.abspath(os.path.join(root, 'locale'))
+        for f in files:
+            f.dirpath = os.path.relpath(f.dirpath, root)
+            f.locale_dir = locale_dir
 
         files.sort()
         return files
