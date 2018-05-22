@@ -10,10 +10,13 @@ env:
   - DJANGO_VERSION="<1.10"
   - DJANGO_VERSION="<1.11"
   - DJANGO_VERSION="<1.12"
+  - DJANGO_VERSION="<2.1"
+
+matrix:
+  exclude:
+    - { python: "2.7", env: DJANGO_VERSION="<2.1" }
 
 install:
-  - pip install -U setuptools
-  - pip install -U -r requirements.txt
   - pip install -U "Django$DJANGO_VERSION"
 
 script:
