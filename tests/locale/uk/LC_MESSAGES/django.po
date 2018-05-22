@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-29 18:57+0000\n"
+"POT-Creation-Date: 2018-05-22 12:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-#: /home/igor/Projects/django-transtool/tests/apps/app2/b.py:4
+#: apps/app2/b.py:4
 msgid "hi there from b.py"
 msgstr ""
 
-#: /home/igor/Projects/django-transtool/tests/templates/app2/b.html:4
+#: templates/app2/b.html:4
 msgid "hi there from b.html"
 msgstr ""
 
-#: /home/igor/Projects/django-transtool/tests/templates/app2/b.html:6
+#: templates/app2/b.html:6
 msgid ""
 "\n"
 "    he there from b.html\n"

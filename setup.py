@@ -17,9 +17,10 @@ setup(
     include_package_data=True,
     zip_safe=False,  # because include static
     install_requires=[
-        'django>=1.8,<1.12',
+        'django>=1.8,<2.1',
         'django-rosetta>=0.7.14',
         'requests>=2.15.1',
+        'polib>=1.1.0',
     ],
     keywords=[
         'django', 'django-transtool', 'translation', 'localization', 'internationalization', 'i18n', 'l10n',

@@ -37,7 +37,7 @@ class ToolsTestCase(CustomTestCase):
 
         call_command('transtool_compilemessages')
 
-        r = get_lc_files_list(settings.BASE_DIR)
+        r = get_lc_files_list(settings.BASE_DIR, exts=('.po', '.mo'))
         self.assertEqual(len(r), 16)
         check_result(r)
 
