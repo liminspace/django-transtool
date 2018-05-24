@@ -42,6 +42,10 @@ for _domain, _opts in getattr(settings, 'TRANSTOOL_DEFAULT_DOMAINS', {}).items()
 #                 os.path.join(BASE_DIR, 'static/myapp/'),
 #             ),
 #             # 'EXT': ('js',),
+#             # expected args: (locale_path: str, cmd_kwargs: dict) -> dict
+#             # 'BEFORE_MAKE': 'path.to.function.before_make',
+#             # expected args: (locale_path: str, cmd_kwargs: dict) -> None
+#             # 'AFTER_MAKE': 'path.to.function.after_make',
 #         },
 #     }),
 #     (os.path.join(BASE_DIR, './'), {

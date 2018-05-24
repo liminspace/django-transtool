@@ -1,4 +1,5 @@
 import base64
+import copy
 import hashlib
 import os
 import polib
@@ -7,6 +8,7 @@ from io import BytesIO
 from django.core import management
 from django.core.management import BaseCommand, call_command
 from django.utils.encoding import force_bytes
+from django.utils.module_loading import import_string
 from ...tools import get_commonpath
 from ...settings import TRANSTOOL_LOCALE_PATHS, TRANSTOOL_LOCALES, TRANSTOOL_DEFAULT_DOMAINS
 
@@ -126,7 +128,15 @@ class Command(BaseCommand):
                 }
                 if domain_opts.get('REST', False):
                     command_kwargs['ignored_source_dirs'] = self._get_excluded_source_dirs_for_rest(domain)
-                call_object_command(CustomMakemessagesCommand(), **command_kwargs)
+                if domain_opts.get('BEFORE_MAKE'):
+                    command_kwargs = import_string(domain_opts['BEFORE_MAKE'])(
+                        locale_path, copy.deepcopy(command_kwargs)
+                    ) or command_kwargs
+                try:
+                    call_object_command(CustomMakemessagesCommand(), **command_kwargs)
+                finally:
+                    if domain_opts.get('AFTER_MAKE'):
+                        import_string(domain_opts['AFTER_MAKE'])(locale_path, copy.deepcopy(command_kwargs))
 
     @staticmethod
     def _get_excluded_source_dirs_for_rest(domain):
