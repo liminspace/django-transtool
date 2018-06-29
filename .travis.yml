@@ -17,7 +17,8 @@ matrix:
     - { python: "2.7", env: DJANGO_VERSION="<2.1" }
 
 install:
-  - pip install -U "Django$DJANGO_VERSION" "django-rosetta>=0.7.13" "requests>=2.8.1" "polib>=1.1.0"
+  - pip install -U -r requirements.txt
+  - pip install -U "Django$DJANGO_VERSION"
 
 script:
   - python tools.py test
