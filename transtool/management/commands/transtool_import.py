@@ -52,7 +52,7 @@ class Command(BaseCommand):
                             os.close(tmp_fd)
                             os.remove(remote_file_tmp_fn)
                     elif ext == '.mo':
-                        with open(abs_path) as f:
+                        with open(abs_path, 'rb') as f:
                             local_file_content = f.read()
                         if remote_file_content != local_file_content:
                             result['changed'][z_rel_path] = None
