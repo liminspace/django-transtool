@@ -1,3 +1,3 @@
-0.0.1 (2017-)
+0.0.14 (2018-08-07)
 =============
-  * First release
+  * Added supporting Django 2.1
