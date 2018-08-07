@@ -3,8 +3,8 @@ setuptools==40.0.0
 wheel==0.31.1
 twine==1.11.0
 
-django<2.1
-django-rosetta==0.8.1
+django==2.1
+django-rosetta==0.8.2
 requests==2.19.1
 polib==1.1.0
 coverage==4.5.1
