@@ -18,7 +18,6 @@ setup(
     zip_safe=False,  # because include static
     install_requires=[
         'django>=1.8,<2.2',
-        'django-rosetta>=0.7.14',
         'requests>=2.15.1',
         'polib>=1.1.0',
     ],

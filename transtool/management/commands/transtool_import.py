@@ -4,8 +4,9 @@ import tempfile
 import zipfile
 import requests
 from io import BytesIO
+from polib import pofile
 from django.core.management import CommandError, BaseCommand
-from ...tools import get_lc_files_list, get_diff_po
+from ...tools import get_lc_files_list, get_diff_po, timestamp_with_timezone
 from ...settings import TRANSTOOL_DL_URL, TRANSTOOL_DL_KEY, TRANSTOOL_PROJECT_BASE_DIR
 
 
@@ -91,6 +92,12 @@ class Command(BaseCommand):
         else:
             self.stdout.write('  :empty:')
 
+    @classmethod
+    def update_import_datetime(cls, fn):
+        po = pofile(fn)
+        po.metadata['X-Transtool-Imported'] = timestamp_with_timezone()
+        po.save()
+
     def copy_files(self, diff_info, imp_zip_file):
         z = zipfile.ZipFile(imp_zip_file)
         try:
@@ -98,9 +105,11 @@ class Command(BaseCommand):
                 self.stdout.write('Copy new files:')
                 for fn in sorted(diff_info['new']):
                     content = z.read(fn)
+                    po_path = os.path.join(TRANSTOOL_PROJECT_BASE_DIR, fn)
                     try:
-                        with open(os.path.join(TRANSTOOL_PROJECT_BASE_DIR, fn), 'wb') as f:
+                        with open(po_path, 'wb') as f:
                             f.write(content)
+                        self.update_import_datetime(po_path)
                     except IOError as e:
                         self.stdout.write(e.message)
                         self.stdout.write('  SKIP: {}'.format(fn))
@@ -116,9 +125,11 @@ class Command(BaseCommand):
                     else:
                         fn_info = fn
                     content = z.read(fn)
+                    po_path = os.path.join(TRANSTOOL_PROJECT_BASE_DIR, fn)
                     try:
-                        with open(os.path.join(TRANSTOOL_PROJECT_BASE_DIR, fn), 'wb') as f:
+                        with open(po_path, 'wb') as f:
                             f.write(content)
+                        self.update_import_datetime(po_path)
                     except IOError as e:
                         self.stdout.write(e.message)
                         self.stdout.write('  SKIP: {}'.format(fn_info))

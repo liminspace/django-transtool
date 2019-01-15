@@ -1,7 +1,9 @@
+from datetime import datetime
 import difflib
 import os
 import re
 import polib
+from django.utils import timezone
 
 
 lc_dir_re = re.compile(r'^.*?locale/[\w\-]{2,5}/LC_MESSAGES$')
@@ -62,3 +64,19 @@ def get_commonpath(paths):
             break
     prefix = os.sep if isabs else ''
     return prefix + os.sep.join(common)
+
+
+def timestamp_with_timezone(dt=None):
+    """
+    Return a timestamp with a timezone for the configured locale.  If all else
+    fails, consider localtime to be UTC.
+    """
+    dt = dt or datetime.now()
+    if timezone is None:
+        return dt.strftime('%Y-%m-%d %H:%M%z')
+    if not dt.tzinfo:
+        tz = timezone.get_current_timezone()
+        if not tz:
+            tz = timezone.utc
+        dt = dt.replace(tzinfo=tz)
+    return dt.strftime("%Y-%m-%d %H:%M%z")
