@@ -106,10 +106,12 @@ class Command(BaseCommand):
                 for fn in sorted(diff_info['new']):
                     content = z.read(fn)
                     po_path = os.path.join(TRANSTOOL_PROJECT_BASE_DIR, fn)
+                    ext = os.path.splitext(po_path)[1]
                     try:
                         with open(po_path, 'wb') as f:
                             f.write(content)
-                        self.update_import_datetime(po_path)
+                        if ext == '.po':
+                            self.update_import_datetime(po_path)
                     except IOError as e:
                         self.stdout.write(e.message)
                         self.stdout.write('  SKIP: {}'.format(fn))
@@ -126,10 +128,12 @@ class Command(BaseCommand):
                         fn_info = fn
                     content = z.read(fn)
                     po_path = os.path.join(TRANSTOOL_PROJECT_BASE_DIR, fn)
+                    ext = os.path.splitext(po_path)[1]
                     try:
                         with open(po_path, 'wb') as f:
                             f.write(content)
-                        self.update_import_datetime(po_path)
+                        if ext == '.po':
+                            self.update_import_datetime(po_path)
                     except IOError as e:
                         self.stdout.write(e.message)
                         self.stdout.write('  SKIP: {}'.format(fn_info))
