@@ -3,6 +3,7 @@ import difflib
 import os
 import re
 import polib
+from django.utils.encoding import force_str
 from django.utils import timezone
 
 
@@ -27,16 +28,12 @@ def get_lc_files_list(search_root, exts=('.po', '.mo')):
 def get_diff_po(po1_fn, po2_fn):
     po1_lines = []
     po2_lines = []
-    for entry in sorted(polib.pofile(po1_fn), key=lambda obj: obj.msgid):
-        po1_lines.append((
-            u'msgid {}\n\n'
-            u'msgstr {}\n\n'
-        ).format(entry.msgid, entry.msgstr))
-    for entry in sorted(polib.pofile(po2_fn), key=lambda obj: obj.msgid):
-        po2_lines.append((
-            u'msgid {}\n\n'
-            u'msgstr {}\n\n'
-        ).format(entry.msgid, entry.msgstr))
+    for entry in sorted(polib.pofile(po1_fn, wrapwidth=8000), key=lambda obj: obj.msgid):
+        entry.occurrences.clear()
+        po1_lines.append(force_str(entry))
+    for entry in sorted(polib.pofile(po2_fn, wrapwidth=8000), key=lambda obj: obj.msgid):
+        entry.occurrences.clear()
+        po2_lines.append(force_str(entry))
     added = removed = 0
     for diff_line in difflib.unified_diff(po1_lines, po2_lines):
         if diff_line.startswith('+++ ') or diff_line.startswith('--- ') or diff_line.startswith('@@ '):
