@@ -17,7 +17,7 @@ setup(
     include_package_data=True,
     zip_safe=False,  # because include static
     install_requires=[
-        'django>=1.8,<2.2',
+        'django>=1.8,<2.3',
         'requests>=2.15.1',
         'polib>=1.1.0',
     ],
