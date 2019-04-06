@@ -1,13 +1,20 @@
-from datetime import datetime
+import sys
 import difflib
 import os
 import re
 import polib
+from datetime import datetime
 from django.utils.encoding import force_str
 from django.utils import timezone
 
 
 lc_dir_re = re.compile(r'^.*?locale/[\w\-]{2,5}/LC_MESSAGES$')
+
+
+def list_clear(list_obj):
+    if sys.version_info >= (3, 5):
+        list_obj.clear()
+    del list_obj[:]
 
 
 def get_lc_files_list(search_root, exts=('.po', '.mo')):
@@ -29,10 +36,10 @@ def get_diff_po(po1_fn, po2_fn):
     po1_lines = []
     po2_lines = []
     for entry in sorted(polib.pofile(po1_fn, wrapwidth=8000), key=lambda obj: obj.msgid):
-        entry.occurrences.clear()
+        list_clear(entry.occurrences)
         po1_lines.append(force_str(entry))
     for entry in sorted(polib.pofile(po2_fn, wrapwidth=8000), key=lambda obj: obj.msgid):
-        entry.occurrences.clear()
+        list_clear(entry.occurrences)
         po2_lines.append(force_str(entry))
     added = removed = 0
     for diff_line in difflib.unified_diff(po1_lines, po2_lines):
