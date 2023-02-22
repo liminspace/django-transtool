@@ -5,4 +5,4 @@ django==4.1.7
 django-rosetta>=0.7.14
 requests>=2.15.1
 polib>=1.1.0
-coverage==4.5.2
+coverage==7.1.0
