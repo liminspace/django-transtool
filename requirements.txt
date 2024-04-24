@@ -1,5 +1,5 @@
 wheel==0.43.0
-twine==1.12.1
+twine==5.0.0
 
 django<2.2
 django-rosetta>=0.7.14
