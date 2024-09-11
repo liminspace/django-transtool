@@ -1,7 +1,7 @@
 wheel==0.44.0
 twine==5.1.1
 
-django<2.2
+django==5.1.1
 django-rosetta>=0.7.14
 requests>=2.15.1
 polib>=1.1.0
